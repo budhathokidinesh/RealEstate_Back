@@ -12,7 +12,7 @@ export const createResidency = async (req, res) => {
     image,
     userEmail,
   } = req.body.data;
-  console.log(req.body.data);
+
   try {
     const residency = await prisma.residency.create({
       data: {
