@@ -10,7 +10,7 @@ export const createUser = async (req, res) => {
       message: "User registered successfully",
       user: user,
     });
-  } else res.send(201).json({ message: "User already registered" });
+  } else res.status(201).json({ message: "User already registered" });
 };
 //Function for the book visit
 export const bookVisit = async (req, res) => {
@@ -33,10 +33,13 @@ export const bookVisit = async (req, res) => {
           bookedVisits: { push: { id, date } },
         },
       });
-      res.send("Your booking is successfull. See you soon.");
+      res
+        .status(200)
+        .json({ message: "Your booking is successfull. See you soon." });
     }
   } catch (error) {
-    throw new Error(error.message);
+    console.error("Error booking visit:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 //Function to get all bookings of a user
@@ -47,9 +50,10 @@ export const getAllBookings = async (req, res) => {
       where: { email: email },
       select: { bookedVisits: true },
     });
-    res.status(200).send(booking);
+    res.status(200).json(booking);
   } catch (error) {
-    throw new Error(error.message);
+    console.error("Error fetching bookings:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 //Function to cancel the booking
@@ -72,10 +76,11 @@ export const cancelBoking = async (req, res) => {
           bookedVisits: user.bookedVisits,
         },
       });
-      res.send("Booking cancelled successfully.");
+      res.status(200).json({ message: "Booking cancelled successfully." });
     }
   } catch (error) {
-    throw new Error(error.message);
+    console.error("Error cancelling booking:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 //Funtion to add a residencies in favourite list
@@ -95,7 +100,9 @@ export const toFav = async (req, res) => {
           },
         },
       });
-      res.send({ message: "Removed from the favourites", user: udateUser });
+      res
+        .status(200)
+        .json({ message: "Removed from the favourites", user: udateUser });
     } else {
       const updateUser = await prisma.user.update({
         where: { email: email },
@@ -105,10 +112,11 @@ export const toFav = async (req, res) => {
           },
         },
       });
-      res.send({ message: "Updated favourites", user: updateUser });
+      res.status(200).json({ message: "Updated favourites", user: updateUser });
     }
   } catch (error) {
-    throw new Error(error.message);
+    console.error("Error updating favourites:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 //function to get all favourite
@@ -119,8 +127,9 @@ export const allFav = async (req, res) => {
       where: { email: email },
       select: { favResidenciesID: true },
     });
-    res.status(200).send(favRes);
+    res.status(200).json(favRes);
   } catch (error) {
-    throw new Error(error.message);
+    console.error("Error fetching favourites:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
