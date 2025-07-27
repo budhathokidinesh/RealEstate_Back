@@ -44,7 +44,7 @@ export const getAllResidencies = async (req, res) => {
   });
   res.send(residencies);
 };
-//Function to get specific residency by id
+//Function to get specific residency by residencyId
 export const getResidency = async (req, res) => {
   const { id } = req.params;
   try {
