@@ -119,7 +119,7 @@ export const toFav = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-//function to get all favourite
+//THis is to get all the favourites
 export const allFav = async (req, res) => {
   const { email } = req.body;
   try {
